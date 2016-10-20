@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Auth;
 
+use Illuminate\Http\Request; // add
 use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
@@ -35,5 +36,16 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest', ['except' => 'logout']);
+    }
+
+    // Over-ridden
+    // 這樣只有 verified == true 的人可以登入
+    public function credentials(Request $request)
+    {
+        return [
+            'email' => $request->email,
+            'password' => $request->password,
+            'verified' => 1,
+        ];
     }
 }
